@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя Гра-Клікер</title>
+    
+    <!-- СТИЛІ ОФОРМЛЕННЯ (CSS) -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .score-board {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .click-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+            transition: transform 0.1s, box-shadow 0.1s;
+            user-select: none;
+        }
+
+        .click-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(255, 75, 43, 0.4);
+        }
+
+        .shop {
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .shop h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .upgrade-btn {
+            background: #2ed573;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .upgrade-btn:hover {
+            background: #26af5f;
+        }
+
+        .upgrade-btn:disabled {
+            background: #a4b0be;
+            cursor: not-allowed;
+        }
+
+        .power-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- СТРУКТУРА ГРИ (HTML) -->
+    <div class="game-container">
+        <h1>🎮 Шкільний Клікер</h1>
+        <p class="subtitle">Натискай на кнопку та прокачуй свій рівень!</p>
+
+        <div class="score-board">
+            <span id="score">0</span> 🪙
+        </div>
+
+        <button id="clickBtn" class="click-btn">КЛІК!</button>
+
+        <div class="shop">
+            <h2>Магазин покращень</h2>
+            <button id="upgradeBtn" class="upgrade-btn">
+                Покращити клік (+1) <br>
+                <span>Вартість: <b id="upgradeCost">10</b> монет</span>
+            </button>
+        </div>
+
+        <p class="power-info">Сила кліку: <span id="clickPower">1</span></p>
+    </div>
+
+    <!-- ЛОГІКА ГРИ (JAVASCRIPT) -->
+    <script>
+        let score = 0;
+        let clickPower = 1;
+        let upgradeCost = 10;
+
+        const scoreEl = document.getElementById('score');
+        const clickBtn = document.getElementById('clickBtn');
+        const upgradeBtn = document.getElementById('upgradeBtn');
+        const upgradeCostEl = document.getElementById('upgradeCost');
+        const clickPowerEl = document.getElementById('clickPower');
+
+        // Клік по основній кнопці
+        clickBtn.addEventListener('click', () => {
+            score += clickPower;
+            updateUI();
+        });
+
+        // Купівля покращення
+        upgradeBtn.addEventListener('click', () => {
+            if (score >= upgradeCost) {
+                score -= upgradeCost;
+                clickPower += 1;
+                upgradeCost = Math.floor(upgradeCost * 1.5);
+                updateUI();
+            }
+        });
+
+        // Оновлення інтерфейсу
+        function updateUI() {
+            scoreEl.textContent = score;
+            clickPowerEl.textContent = clickPower;
+            upgradeCostEl.textContent = upgradeCost;
+
+            if (score >= upgradeCost) {
+                upgradeBtn.disabled = false;
+            } else {
+                upgradeBtn.disabled = true;
+            }
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
